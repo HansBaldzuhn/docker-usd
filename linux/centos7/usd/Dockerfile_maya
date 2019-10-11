@@ -7,6 +7,10 @@ ARG usd_version
 ARG maya_version
 ARG current_host_ip_address
 
+ARG build_proc
+
+ENV BUILD_PROCS=$build_proc
+
 LABEL pxr.usd.version="${usd_version}" maintainer="Aloys.Baillet - Animal Logic"
 
 ENV USD_VERSION="${usd_version}"

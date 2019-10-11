@@ -26,8 +26,8 @@ cd $TMP_DIR && \
       -DPXR_BUILD_TESTS=ON \
       -DOPENEXR_LOCATION=$BUILD_DIR \
       -DPTEX_INCLUDE_DIR=$BUILD_DIR/include/ptex \
+      -DPTEX_LIBRARY=$BUILD_DIR/lib/libPtex.a \
       -DOPENSUBDIV_ROOT_DIR=$BUILD_DIR \
-      -DPTEX_LIBRARY=$BUILD_DIR/lib/libPtex.so \
       -DGLEW_INCLUDE_DIR=$BUILD_DIR/include/GL \
       -DGLEW_LIBRARY=$BUILD_DIR/lib/libGLEW.so \
       -DPXR_MALLOC_LIBRARY:path=$BUILD_DIR/lib/libjemalloc.so \

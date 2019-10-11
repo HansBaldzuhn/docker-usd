@@ -7,6 +7,9 @@ FROM usd-docker/base:latest-centos7
 LABEL maintainer="Aloys.Baillet - Animal Logic"
 
 ARG current_host_ip_address
+ARG build_proc
+
+ENV BUILD_PROCS=$build_proc
 
 ENV PYTHON_SITE_PACKAGES=$BUILD_DIR/lib/python2.7/site-packages
 ENV PYTHON_EXECUTABLE=python

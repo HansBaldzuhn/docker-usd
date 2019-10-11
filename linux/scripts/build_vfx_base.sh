@@ -249,7 +249,7 @@ cd $TMP_DIR &&\
    tar -zxf $DOWNLOADS_DIR/googletest-1.8.1.tar.gz &&\
    cd $TMP_DIR/googletest-release-1.8.1 && \
     mkdir build && cd build && \
-    $BUILD_DIR/cmake-3/bin/cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$BUILD_DIR .. && \
+    $BUILD_DIR/cmake-3/bin/cmake -G"Unix Makefiles" -DCMAKE_INSTALL_PREFIX=$BUILD_DIR -DCMAKE_CXX_FLAGS="-fPIC" .. && \
     make -j ${BUILD_PROCS} && \
     make install
 

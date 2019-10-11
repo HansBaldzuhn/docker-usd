@@ -2,17 +2,16 @@
 
 set -e
 
-if [ -z "$1" ]; then
-  echo "Please pass the Maya Major version to use as the first and only argument (e.g. 2018)"
-  exit 1
-fi
-
 export DOWNLOADS_DIR="`pwd`/../downloads"
 export USD_VERSION="18.11"
 export CUDA_VERSION="9.0"
-export MAYA_VERSION="$1"
-export MAYA_MAJOR_VERSION=$MAYA_VERSION
+export MAYA_VERSION="2019"
+export AL_USD_VERSION="0.29.4"
+export MAYA_MAJOR_VERSION="${MAYA_VERSION}"
 export BUILD_PROC=`nproc`
+
+export LOCAL_IP=`hostname -I|cut -d' ' -f1`
+
 
 echo "Downloads folder: ${DOWNLOADS_DIR}"
 #echo "Copy local root certificates for corporate networks"
@@ -23,6 +22,7 @@ export LOCAL_IP=`hostname -I|cut -d' ' -f1`
 scripts/download_vfx.sh
 scripts/download_maya.sh
 scripts/download_usd.sh
+scripts/download_AL_USDMaya.sh
 
 # Start a local server to serve files needed during the build.
 cd ${DOWNLOADS_DIR} && python -m SimpleHTTPServer && cd - &
@@ -63,3 +63,15 @@ docker build --build-arg current_host_ip_address=${LOCAL_IP} \
              -f centos7/usd/Dockerfile_maya .
 docker tag "usd-docker/maya${MAYA_VERSION}-usd:${USD_VERSION}-centos7" "usd-docker/maya${MAYA_VERSION}-usd:latest-centos7"
 docker tag "usd-docker/maya${MAYA_VERSION}-usd:${USD_VERSION}-centos7" "usd-docker/maya-usd:latest-centos7"
+
+
+echo "Build AL_USDMaya plugin from Animal Logic"
+docker build --build-arg current_host_ip_address=${LOCAL_IP} \
+			 --build-arg usd_version=${USD_VERSION} \
+			 --build-arg maya_version=${MAYA_VERSION} \
+			 --build-arg al_usd_version=${AL_USD_VERSION} \
+			 --build-arg build_proc=${BUILD_PROC} \
+             -t "usd-docker/al_usdmaya_${AL_USD_VERSION}_${MAYA_VERSION}:${USD_VERSION}-centos7" \
+             -f centos7/AL_USDMaya/Dockerfile .
+docker tag "usd-docker/al_usdmaya_${AL_USD_VERSION}_${MAYA_VERSION}:${USD_VERSION}-centos7" "usd-docker/al_usdmaya:latest-centos7"
+

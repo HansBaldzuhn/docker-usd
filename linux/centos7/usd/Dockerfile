@@ -5,6 +5,10 @@ FROM usd-docker/vfx:latest-centos7
 ARG current_host_ip_address
 ARG usd_version
 
+ARG build_proc
+
+ENV BUILD_PROCS=$build_proc
+
 LABEL pxr.usd.version="$usd_version" maintainer="Aloys.Baillet - Animal Logic"
 
 ENV USD_VERSION=$usd_version

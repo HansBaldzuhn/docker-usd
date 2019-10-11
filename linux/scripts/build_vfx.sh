@@ -119,9 +119,10 @@ cd $TMP_DIR &&\
 cd $TMP_DIR &&\
    tar -zxf $DOWNLOADS_DIR/ptex-2.0.41.tar.gz &&\
    cd $TMP_DIR/ptex-2.0.41/src && \
-    cmake -DCMAKE_INSTALL_PREFIX=$BUILD_DIR && \
+    cmake -DCMAKE_INSTALL_PREFIX=$BUILD_DIR -DCMAKE_CXX_FLAGS="-fPIC" && \
     make -j ${BUILD_PROCS} && \
     cp ptex/libPtex.so $BUILD_DIR/lib/ && \
+    cp ptex/libPtex.a $BUILD_DIR/lib/ && \
     mkdir $BUILD_DIR/include/ptex && \
     cp ../src/ptex/*.h $BUILD_DIR/include/ptex
 

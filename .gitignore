@@ -6,3 +6,6 @@ linux/cert/*.pem
 .settings/
 downloads/*
 Testing
+data/
+bin
+*.log

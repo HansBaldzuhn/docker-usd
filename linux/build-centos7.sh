@@ -7,13 +7,15 @@ export USD_VERSION="18.11"
 export CUDA_VERSION="9.0"
 
 echo "Downloads folder: ${DOWNLOADS_DIR}"
-echo "Copy local root certificates for corporate networks"
-[ -e /etc/pki/ca-trust/source/anchors ] && cp -u /etc/pki/ca-trust/source/anchors/* cert/
+#echo "Copy local root certificates for corporate networks"
+#[ -e /etc/pki/ca-trust/source/anchors  && cp -u "/etc/pki/ca-trust/source/anchors/*" cert/
 
 export LOCAL_IP=`hostname -I|cut -d' ' -f1`
 
 scripts/download_vfx.sh
 scripts/download_usd.sh
+
+export BUILD_PROC=`nproc`
 
 # Start a local server to serve files needed during the build.
 cd ${DOWNLOADS_DIR} && python -m SimpleHTTPServer && cd - &
@@ -33,12 +35,14 @@ docker tag "usd-docker/base:1-centos7" "usd-docker/base:latest-centos7"
 echo "Build VFX packages"
 docker build --build-arg current_host_ip_address=${LOCAL_IP} \
              -t "usd-docker/vfx:1-centos7" \
+             --build-arg build_proc=${BUILD_PROC} \
              -f centos7/vfx/Dockerfile .
 docker tag "usd-docker/vfx:1-centos7" "usd-docker/vfx:latest-centos7"
 
 echo "Build USD v${USD_VERSION}"
 docker build --build-arg current_host_ip_address=${LOCAL_IP} \
              --build-arg usd_version=${USD_VERSION} \
+             --build-arg build_proc=${BUILD_PROC} \
              -t "usd-docker/usd:${USD_VERSION}-centos7" \
              -f centos7/usd/Dockerfile .
 docker tag "usd-docker/usd:${USD_VERSION}-centos7" "usd-docker/usd:${USD_VERSION}-centos7"

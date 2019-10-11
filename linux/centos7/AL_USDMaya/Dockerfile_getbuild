@@ -1,0 +1,35 @@
+############################################################
+# Dockerfile to get all usd library in host machine
+
+ARG usd_version
+ARG maya_version
+ARG al_usd_version
+FROM usd-docker/al_usdmaya_${al_usd_version}_${maya_version}:${usd_version}-centos7
+
+ARG usd_version
+ARG maya_version
+ARG al_usd_version
+
+ARG user_name
+ARG user_id
+ARG home
+ARG group_name
+ARG group_id
+
+ENV USER_NAME=${user_name}
+ENV GROUP_NAME=${group_name}
+
+# Set env
+ENV USD_VERSION=$usd_version
+ENV MAYA_VERSION=$maya_version
+ENV AL_USD_VERSION=$al_usd_version
+
+
+RUN groupadd ${group_name} && \
+	useradd -g ${group_name} ${user_name} 
+
+COPY scripts/get_usd_build.sh /tmp/
+
+RUN mkdir -p /data/install
+
+CMD /tmp/get_usd_build.sh
